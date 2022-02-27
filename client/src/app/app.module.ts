@@ -14,6 +14,8 @@ import { GeneralChatComponent } from './chat/general-chat/general-chat.component
 import { ListPersonnalMessageComponent } from './chat/list-personnal-message/list-personnal-message.component';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { LoginComponent } from './user/login/login.component';
+import { RegisterComponent } from './user/register/register.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { NavbarComponent } from './navbar/navbar.component';
     GeneralChatComponent,
     ListPersonnalMessageComponent,
     HomeComponent,
-    NavbarComponent
+    NavbarComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
