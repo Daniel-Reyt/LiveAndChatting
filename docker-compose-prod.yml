@@ -1,0 +1,44 @@
+version: '3.1'
+
+services:
+  LAC-node-prod:
+    container_name: LAC-node-prod
+    build:
+      context: ./server
+      dockerfile: Dockerfile-prod
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: ["npm", "run", "prod"]
+    env_file:
+      - ./.env-prod
+
+  LAC-angular-prod:
+    container_name: LAC-angular-prod
+    build:
+      context: ./client
+      dockerfile: Dockerfile-prod
+    ports:
+      - 81:81
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev"]
+    env_file:
+      - ./.env-dev
+    depends_on:
+      - LAC-node-prod
+
+  LAC-mariadb-dev:
+    container_name: LAC-mariadb-dev
+    image: mysql
+    build: 
+      context: ./BDD
+    volumes:
+      - ./BDD/data:/var/lib/mysql:z
+    env_file:
+      - ./.env-prod
+    ports:
+      - 3306:3306

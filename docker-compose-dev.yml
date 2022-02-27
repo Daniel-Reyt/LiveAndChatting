@@ -1,0 +1,54 @@
+version: '3.1'
+
+services:
+  node-dev:
+    container_name: node-dev
+    build:
+      context: ./server
+      dockerfile: Dockerfile-dev
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/appBack
+      - /appBack/node_modules
+    command: ["nodemon", "server"]
+    env_file:
+      - ./.env-dev
+    depends_on:
+      - LAC-mariadb-dev
+
+  angular-dev:
+    container_name: angular-dev
+    build:
+      context: ./client
+      dockerfile: Dockerfile-dev
+    ports:
+      - 4200:4200
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev"]
+    env_file:
+      - ./.env-dev
+    depends_on:
+      - comparator-node-dev
+  
+  adminer-dev:
+    container_name: adminer-dev
+    image: adminer
+    depends_on:
+      - comparator-mariadb-dev
+    ports:
+      - "86:8080"
+  
+  mariadb-dev:
+    container_name: mariadb-dev
+    image: mysql
+    build: 
+      context: ./bdd
+    volumes:
+      - ./bdd/data:/var/lib/mysql:z
+    env_file:
+      - ./.env-dev
+    ports:
+      - 3306:3306
